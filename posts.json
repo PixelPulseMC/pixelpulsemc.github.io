@@ -1,0 +1,23 @@
+{
+  "announcements": [
+    {
+      "title": "Server Coming Soon",
+      "date": "2026-04-30",
+      "content": "PixelPulse survival server is in final testing."
+    }
+  ],
+  "blog": [
+    {
+      "title": "Behind the scenes",
+      "date": "2026-04-28",
+      "content": "We are building custom Minecraft mechanics from scratch."
+    }
+  ],
+  "changelog": [
+    {
+      "title": "v1.0 Launch",
+      "date": "2026-04-25",
+      "content": "Initial PixelPulse release."
+    }
+  ]
+}
