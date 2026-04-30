@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: #e6ffe6;
+}
+
+/* navbar */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 25px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #00ff6640;
+  position: sticky;
+  top: 0;
+}
+
+.logo {
+  color: #00ff66;
+  font-weight: bold;
+}
+
+nav a {
+  color: #aaa;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #00ff66;
+}
+
+/* hero */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero h1 {
+  color: #00ff66;
+  font-size: 45px;
+}
+
+/* layout */
+.container {
+  padding: 20px;
+}
+
+/* glass cards */
+.card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,255,102,0.2);
+  backdrop-filter: blur(12px);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #00ff66;
+}
+
+/* posts */
+.post {
+  border-left: 2px solid #00ff66;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.post small {
+  color: #888;
+}
