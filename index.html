@@ -4,95 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PixelPulse</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0a0a0a;
-  color: #e6ffe6;
-}
-
-/* top bar */
-.nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 30px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #1aff1a33;
-}
-
-.nav h1 {
-  color: #00ff66;
-  margin: 0;
-}
-
-.nav a {
-  color: #ccc;
-  margin-left: 15px;
-  text-decoration: none;
-}
-
-/* glass cards */
-.container {
-  padding: 30px;
-}
-
-.card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(0,255,102,0.2);
-  backdrop-filter: blur(12px);
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 15px rgba(0,255,102,0.05);
-}
-
-h2 {
-  color: #00ff66;
-}
-
-/* hero */
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.hero h1 {
-  font-size: 40px;
-  color: #00ff66;
-}
-
-.hero p {
-  color: #aaa;
-}
-
-/* small tags */
-.tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border: 1px solid #00ff66;
-  border-radius: 20px;
-  font-size: 12px;
-  margin-right: 5px;
-  color: #00ff66;
-}
-</style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="nav">
-  <h1>PixelPulse</h1>
-  <div>
+<header class="nav">
+  <div class="logo">PixelPulse</div>
+  <nav>
     <a href="#announcements">Announcements</a>
+    <a href="#blog">Blog</a>
     <a href="#changelog">Changelog</a>
     <a href="#about">About</a>
-  </div>
-</div>
+  </nav>
+</header>
 
-<div class="hero">
+<section class="hero">
   <h1>PixelPulse</h1>
-  <p
+  <p>Minecraft DLC • Servers • Content Studio</p>
+</section>
+
+<main class="container">
+
+  <section id="announcements" class="card">
+    <h2>Announcements</h2>
+    <div id="announcements-list"></div>
+  </section>
+
+  <section id="blog" class="card">
+    <h2>Blog</h2>
+    <div id="blog-list"></div>
+  </section>
+
+  <section id="changelog" class="card">
+    <h2>Changelog</h2>
+    <div id="changelog-list"></div>
+  </section>
+
+  <section id="about" class="card">
+    <h2>About Us</h2>
+    <p>
+      PixelPulse is a Minecraft content studio building immersive DLCs,
+      servers, and custom gameplay systems.
+    </p>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
