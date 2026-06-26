@@ -1,56 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PixelPulse</title>
-<link rel="stylesheet" href="style.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelPulse - Minecraft Content</title>
+    <style>
+        /* Embed the Minecraft Ten font */
+        @font-face {
+            font-family: 'Minecraft Ten';
+            src: url('minecraft-ten-font.zip/MinecraftTen-VGORe.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
 
+        /* Standard Minecraft UI Font fallback */
+        @font-face {
+            font-family: 'Minecraftia';
+            src: url('https://db.onlinewebfonts.com/t/c1cd47291afb49f4c3983281bebc1e4d.woff2') format('woff2');
+        }
+
+        :root {
+            --bg-color: #f4f6f9;
+            --text-main: #111;
+            --text-muted: #555;
+            --bedrock-gray: #4a4a4a;
+            --bedrock-hover: #373737;
+            --java-green: #3c8527;
+            --java-hover: #2e661e;
+            --accent-purple: #7047eb;
+            --accent-yellow: #ffcd00;
+            --accent-lime: #a3e635;
+            --accent-coral: #ff5a5f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Minecraftia', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-top {
+            font-family: 'Minecraft Ten', sans-serif;
+            font-size: 1.2rem;
+            color: black;
+        }
+
+        .logo-main {
+            font-family: 'Minecraft Ten', sans-serif;
+            font-size: 2.2rem;
+            color: black;
+            text-transform: uppercase;
+        }
+
+        .logo-bottom {
+            font-family: 'Minecraft Ten', sans-serif;
+            font-size: 1rem;
+            background-color: var(--accent-yellow);
+            display: inline-block;
+            padding: 2px 6px;
+            margin-top: 2px;
+        }
+
+        nav th, nav a {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            margin: 0 15px;
+            cursor: pointer;
+        }
+
+        nav a.active {
+            color: var(--accent-purple);
+            background: #f0ecfd;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        /* Main Layout Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Left Hero Section */
+        .hero-panel {
+            background: transparent;
+            padding: 20px 0;
+        }
+
+        .hero-title {
+            font-family: 'Minecraft Ten', sans-serif;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 0.85rem;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+            transition: transform 0.1s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-purple { background: var(--accent-purple); color: white; }
+        .btn-white { background: white; color: var(--accent-purple); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        /* Right Sidebar Panel */
+        .sidebar-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-title {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-text h3 {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .nav-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Platform Content Cards */
+        .content-grid {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
+
+        .platform-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border-left: 8px solid transparent;
+        }
+
+        .platform-card.bedrock { border-left-color: var(--bedrock-gray); }
+        .platform-card.java { border-left-color: var(--java-green); }
+
+        .block-img {
+            width: 80px;
+            height: 80px;
+            image-rendering: pixelated;
+        }
+
+        .platform-info h2 {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .platform-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .platform-btn {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .bedrock .platform-btn { background: var(--bedrock-gray); }
+        .bedrock .platform-btn:hover { background: var(--bedrock-hover); }
+        .java .platform-btn { background: var(--java-green); }
+        .java .platform-btn:hover { background: var(--java-hover); }
+
+        /* Dynamic Category Content Explorer */
+        .explorer-section {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .explorer-title {
+            font-family: 'Minecraft Ten', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 0.8rem;
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: var(--text-main);
+            color: white;
+            border-color: var(--text-main);
+        }
+
+        .items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .content-item-card {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+
+        .content-item-card h4 {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .content-item-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Admin & Changelog System Elements */
+        .changelog-box {
+            background: #fafafa;
+            border: 1px dashed #ccc;
+            padding: 15px;
+            border-radius: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .log-entry:last-child { border: none; margin: 0; padding: 0; }
+        
+        .log-meta {
+            font-size: 0.7rem;
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        .admin-controls {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .input-field {
+            font-family: 'Minecraftia', sans-serif;
+            font-size: 0.8rem;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
 <body>
 
-<header class="nav">
-  <div class="logo">PixelPulse</div>
-  <nav>
-    <a href="#announcements">Announcements</a>
-    <a href="#blog">Blog</a>
-    <a href="#changelog">Changelog</a>
-    <a href="#about">About</a>
-  </nav>
-</header>
+    <header>
+        <div class="logo-container">
+            <span class="logo-top">PIXEL</span>
+            <span class="logo-main">Pulse</span>
+            <div><span class="logo-bottom">SERVERS & CONTENT</span></div>
+        </div>
+        <nav>
+            <a class="active" href="#">Home</a>
+            <a href="#explorer">Content</a>
+            <a href="#changelogs">Changelogs</a>
+        </nav>
+    </header>
 
-<section class="hero">
-  <h1>PixelPulse</h1>
-  <p>Minecraft DLC • Servers • Content Studio</p>
-</section>
+    <div class="container">
+        
+        <div class="hero-panel">
+            <h1 class="hero-title">Minecraft Content<br>Made with Love &<br>Creativity</h1>
+            <p class="hero-desc">Explore tailored worlds, discover custom server networks, download unique add-ons, texture packs, and skins crafted by the PixelPulse team.</p>
+            
+            <div class="hero-buttons">
+                <a href="#explorer" class="btn btn-purple">Explore Addons</a>
+                <a href="#changelogs" class="btn btn-white">View Updates</a>
+            </div>
+        </div>
 
-<main class="container">
+        <div class="sidebar-card" id="changelogs">
+            <div>
+                <h2 class="sidebar-title" style="margin-bottom: 15px;">Changelogs</h2>
+                <div class="changelog-box" id="changelogContainer">
+                    <div class="log-entry">
+                        <div class="log-meta">SYSTEM • JUNE 26, 2026</div>
+                        <p style="font-size: 0.8rem;">Welcome to the new completely overhauled Minecraft hub portal!</p>
+                    </div>
+                </div>
+            </div>
 
-  <section id="announcements" class="card">
-    <h2>Announcements</h2>
-    <div id="announcements-list"></div>
-  </section>
+            <div id="authSection">
+                <h2 class="sidebar-title" style="margin-bottom: 10px;" id="authTitle">Admin Portal</h2>
+                <input type="password" id="adminPassword" class="input-field" placeholder="Enter admin password to post...">
+                <button class="btn btn-purple" style="width: 100%; justify-content: center;" onclick="verifyAdmin()">Login</button>
+            </div>
+        </div>
 
-  <section id="blog" class="card">
-    <h2>Blog</h2>
-    <div id="blog-list"></div>
-  </section>
+        <div class="content-grid">
+            <div class="platform-card bedrock">
+                <img src="https://minecraft.wiki/images/Bedrock_Edition_stone_block.png?e05f6" alt="Bedrock Block" class="block-img" onerror="this.src='https://placehold.co/80?text=Bedrock'">
+                <div class="platform-info">
+                    <h2>Bedrock Content</h2>
+                    <p>Access pocket edition, console, and windows content networks. Servers, skins, and worlds optimized for Bedrock framework mechanics.</p>
+                    <button class="platform-btn" onclick="filterPlatform('Bedrock')">Explore Bedrock →</button>
+                </div>
+            </div>
 
-  <section id="changelog" class="card">
-    <h2>Changelog</h2>
-    <div id="changelog-list"></div>
-  </section>
+            <div class="platform-card java">
+                <img src="https://minecraft.wiki/images/Grass_Block_JE4_BE2.png?842db" alt="Java Block" class="block-img" onerror="this.src='https://placehold.co/80?text=Java'">
+                <div class="platform-info">
+                    <h2>Java Content</h2>
+                    <p>Classic framework customization options. Explore active server lobbies, standard vanilla expansion packs, and client resource modifiers.</p>
+                    <button class="platform-btn" onclick="filterPlatform('Java')">Explore Java →</button>
+                </div>
+            </div>
+        </div>
 
-  <section id="about" class="card">
-    <h2>About Us</h2>
-    <p>
-      PixelPulse is a Minecraft content studio building immersive DLCs,
-      servers, and custom gameplay systems.
-    </p>
-  </section>
+        <div class="explorer-section" id="explorer">
+            <h2 class="explorer-title" id="explorerDisplayTitle">All Content</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="filterCategory('all', this)">All Items</button>
+                <button class="tab-btn" onclick="filterCategory('servers', this)">Servers</button>
+                <button class="tab-btn" onclick="filterCategory('addons', this)">Addons</button>
+                <button class="tab-btn" onclick="filterCategory('maps', this)">Maps</button>
+                <button class="tab-btn" onclick="filterCategory('tpacks', this)">TPacks</button>
+                <button class="tab-btn" onclick="filterCategory('skins', this)">Skins</button>
+            </div>
 
-</main>
+            <div class="items-list" id="itemsList">
+                </div>
+        </div>
 
-<script src="script.js"></script>
+    </div>
+
+    <script>
+        // Database simulation holding all elements matching request criteria
+        const contentDatabase = [
+            { id: 1, name: "PixelPulse Hub Network", type: "servers", platform: "Bedrock", desc: "Crossplay functional vanilla build environment." },
+            { id: 2, name: "Java SMP Vanilla+", type: "servers", platform: "Java", desc: "Survival multiplayer setup running optimizations." },
+            { id: 3, name: "Advanced Machinery", type: "addons", platform: "Bedrock", desc: "Tech systems and processing automation mod elements." },
+            { id: 4, name: "SkyBlock Horizons", type: "maps", platform: "Bedrock", desc: "Custom progression void island survival map map." },
+            { id: 5, name: "CottageCore Textures 32x", type: "tpacks", platform: "Java", desc: "Cozy custom styled complete environment override." },
+            { id: 6, name: "Neon Cyber Knights", type: "skins", platform: "Bedrock", desc: "Bright high-contrast skin designs pack." },
+            { id: 7, name: "Hardcore Tooltip Enhancer", type: "addons", platform: "Java", desc: "Provides extensive details inside item popups." }
+        ];
+
+        let currentPlatform = "all";
+        let currentCategory = "all";
+
+        function renderItems() {
+            const listContainer = document.getElementById('itemsList');
+            listContainer.innerHTML = '';
+
+            const filtered = contentDatabase.filter(item => {
+                const platformMatch = currentPlatform === "all" || item.platform === currentPlatform;
+                const catMatch = currentCategory === "all" || item.type === currentCategory;
+                return platformMatch && catMatch;
+            });
+
+            if(filtered.length === 0) {
+                listContainer.innerHTML = `<p style="font-size:0.8rem; color:#888;">No content found matching criteria.</p>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const node = document.createElement('div');
+                node.className = "content-item-card";
+                node.innerHTML = `
+                    <span style="font-size:0.65rem; background:#eee; padding:2px 6px; border-radius:4px; font-weight:bold;">${item.platform.toUpperCase()}</span>
+                    <h4 style="margin-top:5px;">${item.name}</h4>
+                    <p>${item.desc}</p>
+                `;
+                listContainer.appendChild(node);
+            });
+        }
+
+        function filterPlatform(platform) {
+            currentPlatform = platform;
+            document.getElementById('explorerDisplayTitle').innerText = `${platform} Content Explorer`;
+            renderItems();
+            document.getElementById('explorer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterCategory(category, buttonEl) {
+            currentCategory = category;
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            buttonEl.classList.add('active');
+            renderItems();
+        }
+
+        // Administrative Posting Operations Simulated
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPassword').value;
+            // Secret passphrase setup
+            if(pass === "pixelpulseadmin") {
+                document.getElementById('authSection').innerHTML = `
+                    <h2 class="sidebar-title" style="margin-bottom: 10px;">Post Update</h2>
+                    <textarea id="newLogText" class="input-field" rows="3" placeholder="Write changelog context updates..."></textarea>
+                    <button class="btn btn-purple" style="width: 100%; justify-content: center;" onclick="submitLog()">Publish Log Entry</button>
+                `;
+            } else {
+                alert("Incorrect administration credential key.");
+            }
+        }
+
+        function submitLog() {
+            const text = document.getElementById('newLogText').value;
+            if(!text.trim()) return;
+
+            const container = document.getElementById('changelogContainer');
+            const entry = document.createElement('div');
+            entry.className = "log-entry";
+            
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const today  = new Date();
+            
+            entry.innerHTML = `
+                <div class="log-meta">ADMIN POST • ${today.toLocaleDateString("en-US", options).toUpperCase()}</div>
+                <p style="font-size: 0.8rem;">${text}</p>
+            `;
+            
+            container.insertBefore(entry, container.firstChild);
+            document.getElementById('newLogText').value = '';
+        }
+
+        // Render standard load state items matrix array elements
+        renderItems();
+    </script>
 </body>
 </html>
