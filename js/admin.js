@@ -48,7 +48,7 @@ function resetFormSubmitBtn(form, defaultText) {
   }
 }
 
-/* -------------------------------------------------------- DLC / Addon Form --- */
+/* -------------------------------------------------------- DLC Form --- */
 function initAddonForm(user, profile) {
   const form = document.getElementById('addon-form');
   if (!form) return;
@@ -103,6 +103,9 @@ function initChangelogForm(user, profile) {
     const payload = {
       title: document.getElementById('c-title').value.trim(),
       version: document.getElementById('c-version').value.trim(),
+      customDate: document.getElementById('c-date') ? document.getElementById('c-date').value.trim() : '',
+      imageUrl: document.getElementById('c-image') ? document.getElementById('c-image').value.trim() : '',
+      fileUrl: document.getElementById('c-file') ? document.getElementById('c-file').value.trim() : '',
       content: document.getElementById('c-content').value.trim(),
       authorName: (profile && profile.displayName) || user.email,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -141,6 +144,8 @@ function initAnnouncementForm(user, profile) {
 
     const payload = {
       title: document.getElementById('n-title').value.trim(),
+      imageUrl: document.getElementById('n-image') ? document.getElementById('n-image').value.trim() : '',
+      fileUrl: document.getElementById('n-file') ? document.getElementById('n-file').value.trim() : '',
       content: document.getElementById('n-content').value.trim(),
       pinned: document.getElementById('n-pinned').checked,
       authorName: (profile && profile.displayName) || user.email,
@@ -184,7 +189,7 @@ function addonRow(id, a) {
   return manageRowHtml(id, 'addons', a.name, 'v' + (a.version || '1.0') + (a.category ? ' · ' + a.category : ''));
 }
 function changelogRow(id, c) {
-  return manageRowHtml(id, 'changelogs', c.title, 'v' + (c.version || '—') + ' · ' + formatDate(c.createdAt));
+  return manageRowHtml(id, 'changelogs', c.title, 'v' + (c.version || '—') + ' · ' + (c.customDate || formatDate(c.createdAt)));
 }
 function announcementRow(id, a) {
   return manageRowHtml(id, 'announcements', a.title, (a.pinned ? 'Pinned · ' : '') + formatDate(a.createdAt));
@@ -207,9 +212,9 @@ async function loadManageList(collectionName, targetId, rowFn) {
   }
 }
 
-/* -------------------------------------------- Edit & Delete Global Click Handlers --- */
+/* -------------------------------------------- Edit & Delete Click Handlers --- */
 document.addEventListener('click', async function (e) {
-  // 1. DELETE ACTION
+  // DELETE
   const deleteBtn = e.target.closest('[data-action="delete"]');
   if (deleteBtn) {
     const col = deleteBtn.dataset.col;
@@ -226,7 +231,7 @@ document.addEventListener('click', async function (e) {
     return;
   }
 
-  // 2. EDIT ACTION
+  // EDIT
   const editBtn = e.target.closest('[data-action="edit"]');
   if (editBtn) {
     const col = editBtn.dataset.col;
@@ -267,6 +272,9 @@ document.addEventListener('click', async function (e) {
           form.dataset.editId = id;
           document.getElementById('c-title').value = data.title || '';
           document.getElementById('c-version').value = data.version || '';
+          if (document.getElementById('c-date')) document.getElementById('c-date').value = data.customDate || '';
+          if (document.getElementById('c-image')) document.getElementById('c-image').value = data.imageUrl || '';
+          if (document.getElementById('c-file')) document.getElementById('c-file').value = data.fileUrl || '';
           document.getElementById('c-content').value = data.content || '';
 
           const submitBtn = form.querySelector('button[type="submit"]');
@@ -281,6 +289,8 @@ document.addEventListener('click', async function (e) {
         if (form) {
           form.dataset.editId = id;
           document.getElementById('n-title').value = data.title || '';
+          if (document.getElementById('n-image')) document.getElementById('n-image').value = data.imageUrl || '';
+          if (document.getElementById('n-file')) document.getElementById('n-file').value = data.fileUrl || '';
           document.getElementById('n-content').value = data.content || '';
           document.getElementById('n-pinned').checked = !!data.pinned;
 
