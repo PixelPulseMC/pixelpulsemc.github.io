@@ -1,4 +1,4 @@
-# ⚡ PixelPulse
+# PixelPulse
 
 The official website and resource hub for **PixelPulse** — showcasing custom Minecraft Bedrock Edition content, server updates, project changelogs, and community news.
 
