@@ -1,176 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Staff Panel — PixelPulse</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/admin.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff panel — PixelPulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index" class="logo">⚡ PixelPulse <span>.mc</span></a>
-      <nav class="nav-links">
-        <a href="index">Home</a>
-        <a href="dlc">DLC</a>
-        <a href="servers">Servers</a>
-        <a href="changelog">Changelog</a>
-        <a href="announcements">Announcements</a>
-        <a href="admin" class="active">Staff Panel</a>
-      </nav>
-      <div id="user-area" class="user-area"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>PixelPulse<span class="sub">.mc</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="addons.html">Addons</a>
+      <a href="changelogs.html">Changelog</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="admin.html" class="staff-link hidden active">Staff Panel</a>
     </div>
-  </header>
+    <div class="nav-auth" id="nav-auth"></div>
+  </div>
+</nav>
 
-  <main class="main-content">
-    <div id="admin-gate" class="container hidden">
-      <div class="card" style="text-align: center; padding: 40px;">
-        <h2>🔒 Staff Access Required</h2>
-        <p>You must be logged in as a staff member to view this page.</p>
-        <a href="login" class="btn btn-primary" style="margin-top: 15px;">Log In</a>
-      </div>
+<div id="admin-gate" class="gate-msg hidden">
+  <h2>Staff access required</h2>
+  <p>This panel is for PixelPulse staff only. Log in with a staff account to post addons, changelog entries, and announcements. New accounts are members by default — see the project README for how to promote an account to staff.</p>
+  <a href="login.html" class="btn btn-primary">Log in</a>
+</div>
+
+<div id="admin-content" class="hidden">
+  <div class="wrap page-head">
+    <div class="eyebrow">Staff panel</div>
+    <h1>Manage content</h1>
+    <p>Anything posted here goes live on the site immediately.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="panel-addons" type="button">Addons</button>
+      <button class="admin-tab" data-tab="panel-changelogs" type="button">Changelog</button>
+      <button class="admin-tab" data-tab="panel-announcements" type="button">Announcements</button>
     </div>
 
-    <div id="admin-content" class="container hidden">
-      <h1 class="page-title">Staff Panel</h1>
-
-      <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="tab-dlc">Manage DLC</button>
-        <button class="admin-tab" data-tab="tab-changelogs">Manage Changelogs</button>
-        <button class="admin-tab" data-tab="tab-announcements">Manage Announcements</button>
-      </div>
-
-      <!-- DLC TAB -->
-      <div id="tab-dlc" class="admin-panel active">
-        <div class="card">
-          <h3>Post / Edit DLC</h3>
-          <div id="addon-msg"></div>
-          <form id="addon-form">
-            <div class="form-group">
-              <label>Title / Name</label>
-              <input type="text" id="a-name" required placeholder="e.g. PixelPulse Survival Pack">
+    <div id="panel-addons" class="admin-panel active">
+      <div class="admin-grid">
+        <div class="form-card notched">
+          <h3>New addon</h3>
+          <div id="addon-msg" class="form-msg hidden"></div>
+          <form id="addon-form" novalidate>
+            <div class="field">
+              <label for="a-name">Name</label>
+              <input id="a-name" required>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Category</label>
-                <input type="text" id="a-category" placeholder="World, Texture, Addon, Map">
-              </div>
-              <div class="form-group">
-                <label>Version</label>
-                <input type="text" id="a-version" placeholder="v1.0.0">
-              </div>
+            <div class="field">
+              <label for="a-desc">Description</label>
+              <textarea id="a-desc" required></textarea>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Image URL</label>
-                <input type="url" id="a-image" placeholder="https://...">
-              </div>
-              <div class="form-group">
-                <label>File / Download URL</label>
-                <input type="url" id="a-download" placeholder="https://...">
-              </div>
+            <div class="field">
+              <label for="a-category">Category</label>
+              <input id="a-category" placeholder="e.g. Mobs, Biomes, Tools">
             </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea id="a-desc" rows="4" placeholder="Describe this DLC release..."></textarea>
+            <div class="field">
+              <label for="a-version">Version</label>
+              <input id="a-version" placeholder="e.g. 1.2.0">
             </div>
-            <button type="submit" class="btn btn-primary">Post DLC</button>
+            <div class="field">
+              <label for="a-image">Preview image URL</label>
+              <input id="a-image" type="url" placeholder="https://...">
+            </div>
+            <div class="field">
+              <label for="a-download">Download URL</label>
+              <input id="a-download" type="url" placeholder="https://...">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Post addon</button>
           </form>
         </div>
-        <div class="card" style="margin-top: 20px;">
-          <h3>Existing DLC</h3>
-          <div id="manage-addons"></div>
+        <div>
+          <h3 style="margin-bottom:14px;">Posted addons</h3>
+          <div id="manage-addons" class="manage-list"></div>
         </div>
       </div>
+    </div>
 
-      <!-- CHANGELOGS TAB -->
-      <div id="tab-changelogs" class="admin-panel">
-        <div class="card">
-          <h3>Post / Edit Changelog</h3>
-          <div id="changelog-msg"></div>
-          <form id="changelog-form">
-            <div class="form-row">
-              <div class="form-group">
-                <label>Title</label>
-                <input type="text" id="c-title" required placeholder="e.g. Summer Update Part 2">
-              </div>
-              <div class="form-group">
-                <label>Version</label>
-                <input type="text" id="c-version" placeholder="v2.6.10">
-              </div>
+    <div id="panel-changelogs" class="admin-panel">
+      <div class="admin-grid">
+        <div class="form-card notched">
+          <h3>New changelog entry</h3>
+          <div id="changelog-msg" class="form-msg hidden"></div>
+          <form id="changelog-form" novalidate>
+            <div class="field">
+              <label for="c-title">Title</label>
+              <input id="c-title" required placeholder="e.g. Nether update">
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Custom Date (Optional)</label>
-                <input type="text" id="c-date" placeholder="e.g. Aug 3, 2026">
-              </div>
-              <div class="form-group">
-                <label>Image / Banner URL (Optional)</label>
-                <input type="url" id="c-image" placeholder="https://...">
-              </div>
+            <div class="field">
+              <label for="c-version">Version</label>
+              <input id="c-version" required placeholder="e.g. 1.2.0">
             </div>
-            <div class="form-group">
-              <label>File / Download URL (Optional)</label>
-              <input type="url" id="c-file" placeholder="https://...">
+            <div class="field">
+              <label for="c-content">What changed</label>
+              <textarea id="c-content" required></textarea>
             </div>
-            <div class="form-group">
-              <label>Content (Discord Markdown Supported)</label>
-              <textarea id="c-content" rows="8" required placeholder="- Add line breaks and bullets here..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Post Changelog</button>
+            <button type="submit" class="btn btn-primary btn-block">Post entry</button>
           </form>
         </div>
-        <div class="card" style="margin-top: 20px;">
-          <h3>Existing Changelogs</h3>
-          <div id="manage-changelogs"></div>
+        <div>
+          <h3 style="margin-bottom:14px;">Posted entries</h3>
+          <div id="manage-changelogs" class="manage-list"></div>
         </div>
       </div>
+    </div>
 
-      <!-- ANNOUNCEMENTS TAB -->
-      <div id="tab-announcements" class="admin-panel">
-        <div class="card">
-          <h3>Post / Edit Announcement</h3>
-          <div id="announcement-msg"></div>
-          <form id="announcement-form">
-            <div class="form-group">
-              <label>Title</label>
-              <input type="text" id="n-title" required placeholder="Announcement Title">
+    <div id="panel-announcements" class="admin-panel">
+      <div class="admin-grid">
+        <div class="form-card notched">
+          <h3>New announcement</h3>
+          <div id="announcement-msg" class="form-msg hidden"></div>
+          <form id="announcement-form" novalidate>
+            <div class="field">
+              <label for="n-title">Title</label>
+              <input id="n-title" required>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Image Banner URL (Optional)</label>
-                <input type="url" id="n-image" placeholder="https://...">
-              </div>
-              <div class="form-group">
-                <label>File Attachment URL (Optional)</label>
-                <input type="url" id="n-file" placeholder="https://...">
-              </div>
+            <div class="field">
+              <label for="n-content">Message</label>
+              <textarea id="n-content" required></textarea>
             </div>
-            <div class="form-group">
-              <label>Content</label>
-              <textarea id="n-content" rows="6" required></textarea>
-            </div>
-            <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+            <div class="field checkbox-row">
               <input type="checkbox" id="n-pinned">
-              <label for="n-pinned" style="margin: 0;">Pin to top</label>
+              <label for="n-pinned" style="margin:0;">Pin to top</label>
             </div>
-            <button type="submit" class="btn btn-primary">Post Announcement</button>
+            <button type="submit" class="btn btn-amber btn-block">Post announcement</button>
           </form>
         </div>
-        <div class="card" style="margin-top: 20px;">
-          <h3>Existing Announcements</h3>
-          <div id="manage-announcements"></div>
+        <div>
+          <h3 style="margin-bottom:14px;">Posted announcements</h3>
+          <div id="manage-announcements" class="manage-list"></div>
         </div>
       </div>
-
     </div>
-  </main>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><span class="brand-mark"></span>PixelPulse<span class="sub">.mc</span></span>
+    <span class="fine">Fan-made Bedrock add-ons &amp; DLC. Not affiliated with Mojang or Microsoft.</span>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
 </body>
 </html>
