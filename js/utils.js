@@ -30,3 +30,22 @@ function emptyStateHtml(message) {
 function errorStateHtml(message) {
   return '<div class="empty-state">' + escapeHtml(message) + '</div>';
 }
+
+function parseDiscordMarkdown(text) {
+  if (!text) return '';
+  let html = escapeHtml(text);
+  
+  html = html.replace(/```([\s\S]*?)```/g, '<div style="background: var(--bg-alt); padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.85rem; margin: 10px 0;">$1</div>');
+  html = html.replace(/`([^`]+)`/g, '<span style="background: var(--bg-alt); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">$1</span>');
+  html = html.replace(/^### (.*$)/gim, '<h4 style="margin-top: 16px; margin-bottom: 8px; color: var(--text);">$1</h4>');
+  html = html.replace(/^## (.*$)/gim, '<h3 style="margin-top: 16px; margin-bottom: 8px; color: var(--text);">$1</h3>');
+  html = html.replace(/^# (.*$)/gim, '<h2 style="margin-top: 16px; margin-bottom: 8px; color: var(--text);">$1</h2>');
+  html = html.replace(/^> (.*$)/gim, '<div style="border-left: 3px solid var(--pulse); padding-left: 12px; margin: 8px 0; color: var(--text-dim);">$1</div>');
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/__(.*?)__/g, '<u>$1</u>');
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  html = html.replace(/~~(.*?)~~/g, '<del>$1</del>');
+  html = html.replace(/<@&?(\d+)>/g, '<span style="color: var(--pulse); background: var(--pulse-soft); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem;">@Mention</span>');
+  
+  return html;
+}
