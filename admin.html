@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff panel — PixelPulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="brand-mark"></span>PixelPulse<span class="sub">.mc</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="addons.html">Addons</a>
+      <a href="changelogs.html">Changelog</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="admin.html" class="staff-link hidden active">Staff Panel</a>
+    </div>
+    <div class="nav-auth" id="nav-auth"></div>
+  </div>
+</nav>
+
+<div id="admin-gate" class="gate-msg hidden">
+  <h2>Staff access required</h2>
+  <p>This panel is for PixelPulse staff only. Log in with a staff account to post addons, changelog entries, and announcements. New accounts are members by default — see the project README for how to promote an account to staff.</p>
+  <a href="login.html" class="btn btn-primary">Log in</a>
+</div>
+
+<div id="admin-content" class="hidden">
+  <div class="wrap page-head">
+    <div class="eyebrow">Staff panel</div>
+    <h1>Manage content</h1>
+    <p>Anything posted here goes live on the site immediately.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="panel-addons" type="button">Addons</button>
+      <button class="admin-tab" data-tab="panel-changelogs" type="button">Changelog</button>
+      <button class="admin-tab" data-tab="panel-announcements" type="button">Announcements</button>
+    </div>
+
+    <div id="panel-addons" class="admin-panel active">
+      <div class="admin-grid">
+        <div class="form-card notched">
+          <h3>New addon</h3>
+          <div id="addon-msg" class="form-msg hidden"></div>
+          <form id="addon-form" novalidate>
+            <div class="field">
+              <label for="a-name">Name</label>
+              <input id="a-name" required>
+            </div>
+            <div class="field">
+              <label for="a-desc">Description</label>
+              <textarea id="a-desc" required></textarea>
+            </div>
+            <div class="field">
+              <label for="a-category">Category</label>
+              <input id="a-category" placeholder="e.g. Mobs, Biomes, Tools">
+            </div>
+            <div class="field">
+              <label for="a-version">Version</label>
+              <input id="a-version" placeholder="e.g. 1.2.0">
+            </div>
+            <div class="field">
+              <label for="a-image">Preview image URL</label>
+              <input id="a-image" type="url" placeholder="https://...">
+            </div>
+            <div class="field">
+              <label for="a-download">Download URL</label>
+              <input id="a-download" type="url" placeholder="https://...">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Post addon</button>
+          </form>
+        </div>
+        <div>
+          <h3 style="margin-bottom:14px;">Posted addons</h3>
+          <div id="manage-addons" class="manage-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="panel-changelogs" class="admin-panel">
+      <div class="admin-grid">
+        <div class="form-card notched">
+          <h3>New changelog entry</h3>
+          <div id="changelog-msg" class="form-msg hidden"></div>
+          <form id="changelog-form" novalidate>
+            <div class="field">
+              <label for="c-title">Title</label>
+              <input id="c-title" required placeholder="e.g. Nether update">
+            </div>
+            <div class="field">
+              <label for="c-version">Version</label>
+              <input id="c-version" required placeholder="e.g. 1.2.0">
+            </div>
+            <div class="field">
+              <label for="c-content">What changed</label>
+              <textarea id="c-content" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Post entry</button>
+          </form>
+        </div>
+        <div>
+          <h3 style="margin-bottom:14px;">Posted entries</h3>
+          <div id="manage-changelogs" class="manage-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="panel-announcements" class="admin-panel">
+      <div class="admin-grid">
+        <div class="form-card notched">
+          <h3>New announcement</h3>
+          <div id="announcement-msg" class="form-msg hidden"></div>
+          <form id="announcement-form" novalidate>
+            <div class="field">
+              <label for="n-title">Title</label>
+              <input id="n-title" required>
+            </div>
+            <div class="field">
+              <label for="n-content">Message</label>
+              <textarea id="n-content" required></textarea>
+            </div>
+            <div class="field checkbox-row">
+              <input type="checkbox" id="n-pinned">
+              <label for="n-pinned" style="margin:0;">Pin to top</label>
+            </div>
+            <button type="submit" class="btn btn-amber btn-block">Post announcement</button>
+          </form>
+        </div>
+        <div>
+          <h3 style="margin-bottom:14px;">Posted announcements</h3>
+          <div id="manage-announcements" class="manage-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><span class="brand-mark"></span>PixelPulse<span class="sub">.mc</span></span>
+    <span class="fine">Fan-made Bedrock add-ons &amp; DLC. Not affiliated with Mojang or Microsoft.</span>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
