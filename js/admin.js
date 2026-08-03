@@ -1,4 +1,4 @@
-/* PixelPulse — admin.js: staff-only content management (add + delete) */
+/* PixelPulse — admin.js: staff-only content management (add, edit + delete) */
 
 document.addEventListener('DOMContentLoaded', function () {
   const gate = document.getElementById('admin-gate');
@@ -39,7 +39,16 @@ function initTabs() {
   });
 }
 
-/* ------------------------------------------------------- addon form --- */
+function resetFormSubmitBtn(form, defaultText) {
+  delete form.dataset.editId;
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn) {
+    btn.innerText = defaultText;
+    btn.style.background = '';
+  }
+}
+
+/* -------------------------------------------------------- DLC / Addon Form --- */
 function initAddonForm(user, profile) {
   const form = document.getElementById('addon-form');
   if (!form) return;
@@ -47,20 +56,31 @@ function initAddonForm(user, profile) {
     e.preventDefault();
     const msg = document.getElementById('addon-msg');
     const btn = form.querySelector('button[type="submit"]');
+    const editId = form.dataset.editId;
     btn.disabled = true;
+
+    const payload = {
+      name: document.getElementById('a-name').value.trim(),
+      description: document.getElementById('a-desc').value.trim(),
+      category: document.getElementById('a-category').value.trim(),
+      version: document.getElementById('a-version').value.trim(),
+      imageUrl: document.getElementById('a-image').value.trim(),
+      downloadUrl: document.getElementById('a-download').value.trim(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
     try {
-      await db.collection('addons').add({
-        name: document.getElementById('a-name').value.trim(),
-        description: document.getElementById('a-desc').value.trim(),
-        category: document.getElementById('a-category').value.trim(),
-        version: document.getElementById('a-version').value.trim(),
-        imageUrl: document.getElementById('a-image').value.trim(),
-        downloadUrl: document.getElementById('a-download').value.trim(),
-        createdBy: user.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      if (editId) {
+        await db.collection('addons').doc(editId).update(payload);
+        showFormMsg(msg, 'DLC updated successfully.', 'success');
+      } else {
+        payload.createdBy = user.uid;
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection('addons').add(payload);
+        showFormMsg(msg, 'DLC posted.', 'success');
+      }
       form.reset();
-      showFormMsg(msg, 'Addon posted.', 'success');
+      resetFormSubmitBtn(form, 'Post DLC');
       loadManageList('addons', 'manage-addons', addonRow);
     } catch (err) {
       showFormMsg(msg, err.message, 'error');
@@ -69,7 +89,7 @@ function initAddonForm(user, profile) {
   });
 }
 
-/* --------------------------------------------------- changelog form --- */
+/* --------------------------------------------------- Changelog Form --- */
 function initChangelogForm(user, profile) {
   const form = document.getElementById('changelog-form');
   if (!form) return;
@@ -77,18 +97,29 @@ function initChangelogForm(user, profile) {
     e.preventDefault();
     const msg = document.getElementById('changelog-msg');
     const btn = form.querySelector('button[type="submit"]');
+    const editId = form.dataset.editId;
     btn.disabled = true;
+
+    const payload = {
+      title: document.getElementById('c-title').value.trim(),
+      version: document.getElementById('c-version').value.trim(),
+      content: document.getElementById('c-content').value.trim(),
+      authorName: (profile && profile.displayName) || user.email,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
     try {
-      await db.collection('changelogs').add({
-        title: document.getElementById('c-title').value.trim(),
-        version: document.getElementById('c-version').value.trim(),
-        content: document.getElementById('c-content').value.trim(),
-        authorName: (profile && profile.displayName) || user.email,
-        authorId: user.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      if (editId) {
+        await db.collection('changelogs').doc(editId).update(payload);
+        showFormMsg(msg, 'Changelog updated successfully.', 'success');
+      } else {
+        payload.authorId = user.uid;
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection('changelogs').add(payload);
+        showFormMsg(msg, 'Changelog entry posted.', 'success');
+      }
       form.reset();
-      showFormMsg(msg, 'Changelog entry posted.', 'success');
+      resetFormSubmitBtn(form, 'Post Changelog');
       loadManageList('changelogs', 'manage-changelogs', changelogRow);
     } catch (err) {
       showFormMsg(msg, err.message, 'error');
@@ -97,7 +128,7 @@ function initChangelogForm(user, profile) {
   });
 }
 
-/* ------------------------------------------------ announcement form --- */
+/* ------------------------------------------------ Announcement Form --- */
 function initAnnouncementForm(user, profile) {
   const form = document.getElementById('announcement-form');
   if (!form) return;
@@ -105,18 +136,29 @@ function initAnnouncementForm(user, profile) {
     e.preventDefault();
     const msg = document.getElementById('announcement-msg');
     const btn = form.querySelector('button[type="submit"]');
+    const editId = form.dataset.editId;
     btn.disabled = true;
+
+    const payload = {
+      title: document.getElementById('n-title').value.trim(),
+      content: document.getElementById('n-content').value.trim(),
+      pinned: document.getElementById('n-pinned').checked,
+      authorName: (profile && profile.displayName) || user.email,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
     try {
-      await db.collection('announcements').add({
-        title: document.getElementById('n-title').value.trim(),
-        content: document.getElementById('n-content').value.trim(),
-        pinned: document.getElementById('n-pinned').checked,
-        authorName: (profile && profile.displayName) || user.email,
-        authorId: user.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      if (editId) {
+        await db.collection('announcements').doc(editId).update(payload);
+        showFormMsg(msg, 'Announcement updated successfully.', 'success');
+      } else {
+        payload.authorId = user.uid;
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection('announcements').add(payload);
+        showFormMsg(msg, 'Announcement posted.', 'success');
+      }
       form.reset();
-      showFormMsg(msg, 'Announcement posted.', 'success');
+      resetFormSubmitBtn(form, 'Post Announcement');
       loadManageList('announcements', 'manage-announcements', announcementRow);
     } catch (err) {
       showFormMsg(msg, err.message, 'error');
@@ -125,12 +167,15 @@ function initAnnouncementForm(user, profile) {
   });
 }
 
-/* -------------------------------------------------------- manage list */
+/* -------------------------------------------------------- Manage List --- */
 function manageRowHtml(id, col, title, meta) {
   return (
     '<div class="manage-row">' +
       '<div class="info"><h4>' + escapeHtml(title) + '</h4><span>' + escapeHtml(meta) + '</span></div>' +
-      '<div class="actions"><button class="btn btn-danger btn-sm" data-action="delete" data-col="' + col + '" data-id="' + id + '" type="button">Delete</button></div>' +
+      '<div class="actions">' +
+        '<button class="btn btn-secondary btn-sm" data-action="edit" data-col="' + col + '" data-id="' + id + '" type="button" style="margin-right: 6px;">✏️ Edit</button>' +
+        '<button class="btn btn-danger btn-sm" data-action="delete" data-col="' + col + '" data-id="' + id + '" type="button">🗑️ Delete</button>' +
+      '</div>' +
     '</div>'
   );
 }
@@ -162,18 +207,95 @@ async function loadManageList(collectionName, targetId, rowFn) {
   }
 }
 
+/* -------------------------------------------- Edit & Delete Global Click Handlers --- */
 document.addEventListener('click', async function (e) {
-  const btn = e.target.closest('[data-action="delete"]');
-  if (!btn) return;
-  const col = btn.dataset.col;
-  const id = btn.dataset.id;
-  if (!confirm('Delete this entry? This cannot be undone.')) return;
-  btn.disabled = true;
-  try {
-    await db.collection(col).doc(id).delete();
-    btn.closest('.manage-row').remove();
-  } catch (err) {
-    alert('Could not delete: ' + err.message);
-    btn.disabled = false;
+  // 1. DELETE ACTION
+  const deleteBtn = e.target.closest('[data-action="delete"]');
+  if (deleteBtn) {
+    const col = deleteBtn.dataset.col;
+    const id = deleteBtn.dataset.id;
+    if (!confirm('Delete this entry? This cannot be undone.')) return;
+    deleteBtn.disabled = true;
+    try {
+      await db.collection(col).doc(id).delete();
+      deleteBtn.closest('.manage-row').remove();
+    } catch (err) {
+      alert('Could not delete: ' + err.message);
+      deleteBtn.disabled = false;
+    }
+    return;
+  }
+
+  // 2. EDIT ACTION
+  const editBtn = e.target.closest('[data-action="edit"]');
+  if (editBtn) {
+    const col = editBtn.dataset.col;
+    const id = editBtn.dataset.id;
+    editBtn.disabled = true;
+
+    try {
+      const docSnap = await db.collection(col).doc(id).get();
+      if (!docSnap.exists) {
+        alert('Could not find item to edit.');
+        editBtn.disabled = false;
+        return;
+      }
+
+      const data = docSnap.data();
+
+      if (col === 'addons') {
+        const form = document.getElementById('addon-form');
+        if (form) {
+          form.dataset.editId = id;
+          document.getElementById('a-name').value = data.name || '';
+          document.getElementById('a-desc').value = data.description || '';
+          document.getElementById('a-category').value = data.category || '';
+          document.getElementById('a-version').value = data.version || '';
+          document.getElementById('a-image').value = data.imageUrl || '';
+          document.getElementById('a-download').value = data.downloadUrl || '';
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerText = '💾 Save DLC Changes';
+            submitBtn.style.background = '#22c55e';
+          }
+          form.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else if (col === 'changelogs') {
+        const form = document.getElementById('changelog-form');
+        if (form) {
+          form.dataset.editId = id;
+          document.getElementById('c-title').value = data.title || '';
+          document.getElementById('c-version').value = data.version || '';
+          document.getElementById('c-content').value = data.content || '';
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerText = '💾 Save Changelog Changes';
+            submitBtn.style.background = '#22c55e';
+          }
+          form.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else if (col === 'announcements') {
+        const form = document.getElementById('announcement-form');
+        if (form) {
+          form.dataset.editId = id;
+          document.getElementById('n-title').value = data.title || '';
+          document.getElementById('n-content').value = data.content || '';
+          document.getElementById('n-pinned').checked = !!data.pinned;
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerText = '💾 Save Announcement Changes';
+            submitBtn.style.background = '#22c55e';
+          }
+          form.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    } catch (err) {
+      alert('Error fetching data: ' + err.message);
+    }
+    editBtn.disabled = false;
   }
 });
+
