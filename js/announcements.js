@@ -7,7 +7,7 @@ function announcementCardHtml(a) {
         (a.pinned ? '<span class="pin-tag">Pinned</span>' : '') +
         '<h3>' + escapeHtml(a.title) + '</h3>' +
       '</div>' +
-      '<p class="content">' + escapeHtml(a.content || '') + '</p>' +
+      '<p class="content">' + parseDiscordMarkdown(a.content || '') + '</p>' +
       '<div class="byline">' + escapeHtml(a.authorName || 'Staff') + ' &middot; ' + formatDate(a.createdAt) + '</div>' +
     '</article>'
   );
