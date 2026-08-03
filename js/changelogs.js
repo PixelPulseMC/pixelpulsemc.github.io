@@ -6,7 +6,7 @@ function changelogItemHtml(c) {
       '<span class="version">v' + escapeHtml(c.version || '—') +
         '<span class="date">' + formatDate(c.createdAt) + '</span></span>' +
       '<h3>' + escapeHtml(c.title) + '</h3>' +
-      '<p class="content">' + escapeHtml(c.content || '') + '</p>' +
+      '<p class="content">' + parseDiscordMarkdown(c.content || '') + '</p>' +
       (c.authorName ? '<div class="author">Posted by ' + escapeHtml(c.authorName) + '</div>' : '') +
     '</div>'
   );
