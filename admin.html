@@ -68,6 +68,10 @@
               <input id="a-version" placeholder="e.g. 1.2.0">
             </div>
             <div class="field">
+              <label for="a-date">Date</label>
+              <input id="a-date" type="date">
+            </div>
+            <div class="field">
               <label for="a-image">Preview image URL</label>
               <input id="a-image" type="url" placeholder="https://...">
             </div>
@@ -75,7 +79,8 @@
               <label for="a-download">Download URL</label>
               <input id="a-download" type="url" placeholder="https://...">
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Post addon</button>
+            <button type="submit" class="btn btn-primary btn-block" data-create-label="Post addon" data-edit-label="Save changes">Post addon</button>
+            <button type="button" class="btn btn-ghost btn-block hidden" data-action="cancel-edit" style="margin-top:10px;">Cancel edit</button>
           </form>
         </div>
         <div>
@@ -100,10 +105,15 @@
               <input id="c-version" required placeholder="e.g. 1.2.0">
             </div>
             <div class="field">
+              <label for="c-date">Date</label>
+              <input id="c-date" type="date">
+            </div>
+            <div class="field">
               <label for="c-content">What changed</label>
               <textarea id="c-content" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Post entry</button>
+            <button type="submit" class="btn btn-primary btn-block" data-create-label="Post entry" data-edit-label="Save changes">Post entry</button>
+            <button type="button" class="btn btn-ghost btn-block hidden" data-action="cancel-edit" style="margin-top:10px;">Cancel edit</button>
           </form>
         </div>
         <div>
@@ -124,6 +134,10 @@
               <input id="n-title" required>
             </div>
             <div class="field">
+              <label for="n-date">Date</label>
+              <input id="n-date" type="date">
+            </div>
+            <div class="field">
               <label for="n-content">Message</label>
               <textarea id="n-content" required></textarea>
             </div>
@@ -131,7 +145,8 @@
               <input type="checkbox" id="n-pinned">
               <label for="n-pinned" style="margin:0;">Pin to top</label>
             </div>
-            <button type="submit" class="btn btn-amber btn-block">Post announcement</button>
+            <button type="submit" class="btn btn-amber btn-block" data-create-label="Post announcement" data-edit-label="Save changes">Post announcement</button>
+            <button type="button" class="btn btn-ghost btn-block hidden" data-action="cancel-edit" style="margin-top:10px;">Cancel edit</button>
           </form>
         </div>
         <div>
