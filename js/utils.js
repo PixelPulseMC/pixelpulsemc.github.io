@@ -72,14 +72,3 @@ function parseDiscordMarkdown(text) {
 
   return html;
 }
-function displayDate(item) {
-  return formatDate(item.date || item.createdAt);
-}
-
-function toDateInputValue(ts) {
-  if (!ts) return '';
-  const d = typeof ts.toDate === 'function' ? ts.toDate() : new Date(ts);
-  if (isNaN(d.getTime())) return '';
-  return d.toISOString().slice(0, 10);
-}
-
