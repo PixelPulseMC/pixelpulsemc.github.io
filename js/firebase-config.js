@@ -19,12 +19,12 @@
 */
 
 const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME.firebaseapp.com",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME.appspot.com",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME"
+  apiKey: "AIzaSyARw1A24e0PVdxa0Yp7YpauXth914WYJaQ",
+  authDomain: "pixelpulse-site.firebaseapp.com",
+  projectId: "pixelpulse-site",
+  storageBucket: "pixelpulse-site.firebasestorage.app",
+  messagingSenderId: "211182766850",
+  appId: "1:211182766850:web:4bbf28e3dc6627d914901b"
 };
 
 firebase.initializeApp(firebaseConfig);
