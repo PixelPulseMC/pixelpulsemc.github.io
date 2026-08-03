@@ -20,7 +20,7 @@ function addonCardHtml(a) {
         '<h3>' + escapeHtml(a.name) + '</h3>' +
         '<p class="desc">' + escapeHtml(a.description || '') + '</p>' +
         tag +
-        '<div class="meta"><span>v' + escapeHtml(a.version || '1.0') + '</span><span>' + formatDate(a.createdAt) + '</span></div>' +
+        '<div class="meta"><span>v' + escapeHtml(a.version || '1.0') + '</span><span>' + displayDate(a) + '</span></div>' +
         '<div class="foot">' + download + '</div>' +
       '</div>' +
     '</article>'
